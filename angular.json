@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "administracion-equipos-de-computo"
+    }
+  },
+  "defaultProject": "administracion-equipos-de-computo",
+  "cli": {
+    "analytics": "c1fa235c-cb23-4086-80a2-b6194e2de9ba"
+  }
 }

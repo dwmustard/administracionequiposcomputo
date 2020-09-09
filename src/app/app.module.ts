@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -17,7 +18,8 @@ import { AdminComponent } from './admin/admin.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

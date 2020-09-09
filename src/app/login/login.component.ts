@@ -14,20 +14,34 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   loginUser(event) {
     event.preventDefault()
     const target = event.target
     const username = target.querySelector('#username').value
     const password = target.querySelector('#password').value
-
-    let res = this.Auth.getUserDetails(username,password)
-
-    if(res) {
-        this.router.navigate(['admin'])
-    }else{
-      window.alert('Credenciales invalidas')
-    }
-
+    this.Auth.getUserDetails(username,password).subscribe(data => {
+    
+      this.Auth.setLoggedInStatus(data.name != null);
+      if(this.Auth.loggedInStatus){
+        this.router.navigate['admin'];
+      }else{
+        window.alert(this.Auth.loggedInStatus);
+      }
+    /*  }
+      this.router.navigate['admin']
+      console.log(this.router.navigate['admins'])
+     //this.user = data
+    // console.log(data.name)
+   //  this.Auth.loggedInStatus = data.name == null
+      /* if(data.name != null) {
+        this.user = data
+        this.Auth.loggedInStatus = true
+        
+      }else{
+        window.alert('Credenciales invalidas')
+      }*/
+    });
   }
 
 }

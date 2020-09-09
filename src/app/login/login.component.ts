@@ -11,8 +11,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private Auth: AuthService, private router: Router) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {  }
 
 
   loginUser(event) {
@@ -24,23 +23,11 @@ export class LoginComponent implements OnInit {
     
       this.Auth.setLoggedInStatus(data.name != null);
       if(this.Auth.loggedInStatus){
+        window.alert('Sesion iniciada');
         this.router.navigate['admin'];
       }else{
-        window.alert(this.Auth.loggedInStatus);
-      }
-    /*  }
-      this.router.navigate['admin']
-      console.log(this.router.navigate['admins'])
-     //this.user = data
-    // console.log(data.name)
-   //  this.Auth.loggedInStatus = data.name == null
-      /* if(data.name != null) {
-        this.user = data
-        this.Auth.loggedInStatus = true
-        
-      }else{
-        window.alert('Credenciales invalidas')
-      }*/
+        window.alert('credenciales invalidas');
+      }      
     });
   }
 

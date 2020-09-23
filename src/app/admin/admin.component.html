@@ -1,3 +1,39 @@
-<p>Pagina secreta!</p>
-<button (click)="onClickMe()" class="btn btn-danger">Cerrar Sesion</button>
-<button (click)="generatePdf()">Open PDF</button>
+
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      
+    </div>
+    <div class="col-6">
+      <button (click)="createUserLogs()" class="btn btn-primary">Generar reporte</button>
+      <form (submit)="createUserLogsByUser($event)">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input type="text" class="form-control" id="username" aria-describedby="emailHelp">
+        </div>
+        <button type="submit" class="btn btn-primary">Generar reporte por Usuario</button>
+      </form>
+      <form (submit)="createUserLogsByDate($event)">
+        <div class="form-group">
+          <ngb-datepicker></ngb-datepicker>
+        </div>
+        <button type="submit" class="btn btn-primary">Generar reporte por Fecha</button>
+      </form>
+      <form (submit)="createUserLogsByDateUser($event)">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input type="text" class="form-control" id="username" aria-describedby="emailHelp">
+          <ngb-datepicker #d></ngb-datepicker>
+        </div>
+        <button type="submit" class="btn btn-primary">Generar reporte por Usuario y Fecha</button>
+      </form>
+    </div>
+    <div class="col-1">
+      
+    </div>
+    <div class="col-2">
+      <button (click)="onClickMe()" class="btn btn-danger">Cerrar Sesion</button>
+    </div>
+      
+  </div>
+</div>

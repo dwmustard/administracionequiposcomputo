@@ -13,11 +13,13 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminComponent
+    component: AdminComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'register',
-    component: RegistrerComponent
+    component: RegistrerComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

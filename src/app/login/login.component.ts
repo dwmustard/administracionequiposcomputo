@@ -1,6 +1,8 @@
 import { Router } from '@angular/router';
 import { AuthService } from './../auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';import { JwtHelperService } from '@auth0/angular-jwt';
+
+const helper = new JwtHelperService();
 
 @Component({
   selector: 'app-login',
@@ -15,19 +17,14 @@ export class LoginComponent implements OnInit {
 
 
   loginUser(event) {
-    event.preventDefault()
-    const target = event.target
-    const username = target.querySelector('#username').value
-    const password = target.querySelector('#password').value
-    this.Auth.getUserDetails(username,password).subscribe(data => {
-    
-      this.Auth.setLoggedInStatus(data.name != null);
-      if(this.Auth.loggedInStatus){
-        window.alert('Sesion iniciada');
-        this.router.navigate['admin'];
-      }else{
-        window.alert('credenciales invalidas');
-      }      
+    event.preventDefault();
+    const target = event.target;
+    const username = target.querySelector('#username').value;
+    const password = target.querySelector('#password').value;
+    this.Auth.login({username, password}).subscribe((res) =>  {
+      if (res) {
+        this.router.navigate(['admin']);
+      }
     });
   }
 

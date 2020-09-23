@@ -1,32 +1,77 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { UserResponse, User, Roles } from './models/user.interface';
 
-interface myData{
-  username: boolean,
-  password: string,
-  name: string
-}
+import { catchError, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+const helper = new JwtHelperService();
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private loggedIn = new BehaviorSubject<boolean>(false);
+  private role = new BehaviorSubject<Roles>(null);
 
-  loggedInStatus = false
-  getLoggedInStatus(){
-    return this.loggedInStatus
-  }
-  setLoggedInStatus(value: boolean){
-    this.loggedInStatus = value
+  constructor(private http: HttpClient, private router: Router) {
+    this.checkToken();
   }
 
-  constructor(private http: HttpClient) {}
+  get isLogged(): Observable<boolean> {
+    return this.loggedIn.asObservable();
+  }
 
-  getUserDetails(username, password){
-    return this.http.post<myData>('https://a301935backend.azurewebsites.net/user/validate',{
-      username,
-      password
-      })
+  get isAdmin$(): Observable<string> {
+    return this.role.asObservable();
+  }
+  login(authData: User): Observable<UserResponse | void> {
+    return this.http
+      .post<UserResponse>('https://a301935backend.azurewebsites.net/login/', authData)
+      .pipe(
+        map((res: UserResponse) => {
+          this.saveLocalStorage(res);
+          this.loggedIn.next(true);
+          this.role.next(res.role);
+          return res;
+        }),
+        catchError((err) => this.handlerError(err))
+      );
+  }
+  logout(): void {
+    localStorage.removeItem('user');
+    this.loggedIn.next(false);
+    this.role.next(null);
+    this.router.navigate(['/login']);
+  }
+  private checkToken(): void {
+    const user = JSON.parse(localStorage.getItem('user')) || null;
+
+    if (user) {
+      const isExpired = helper.isTokenExpired(user.token);
+
+      if (isExpired) {
+        this.logout();
+      } else {
+        this.loggedIn.next(true);
+        this.role.next(user.role);
+      }
+    }
+  }
+  private saveLocalStorage(user: UserResponse): void {
+    const { username, message, ...rest } = user;
+    localStorage.setItem('user', JSON.stringify(rest));
+  }
+
+  private handlerError(err): Observable<never> {
+    let errorMessage = 'An errror occured retrienving data';
+    if (err) {
+      errorMessage = `Error: code ${err.message}`;
+    }
+    window.alert(errorMessage);
+    return throwError(errorMessage);
   }
 }

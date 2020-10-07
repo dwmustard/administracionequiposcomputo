@@ -9,6 +9,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { RegistrerComponent } from './registrer/registrer.component';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { MomentModule } from 'angular2-moment/moment.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { RegistrerComponent } from './registrer/registrer.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    NgIdleKeepaliveModule.forRoot(),
+    MomentModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
